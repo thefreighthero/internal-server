@@ -2,37 +2,43 @@
   {
     "extension": "127",
     "name": "Ferd",
-    "uri": "vm13@server",
-    "ip": "192.168.1.21"
+    "user": "mvdetassenkoning12",
+    "uri": "mvdetassenkoning12@mv.voicedata.nl",
+    "ip": "192.168.1.14"
   },
   {
     "extension": "400",
     "name": "Algemeen",
-    "uri": "vm13@server",
-    "ip": "192.168.1.21"
+    "user": "mvdetassenkoningxx",
+    "uri": "mvdetassenkoningxx@mv.voicedata.nl",
+    "ip": "192.168.1.xx"
   },
   {
     "extension": "401",
     "name": "Erwin",
-    "uri": "vm13@server",
-    "ip": "192.168.1.21"
+    "user": "mvdetassenkoning14",
+    "uri": "mvdetassenkoning14@mv.voicedata.nl",
+    "ip": "192.168.1.18"
   },
   {
     "extension": "402",
     "name": "Matthijs",
-    "uri": "vm13@server",
-    "ip": "192.168.1.21"
+    "user": "mvdetassenkoning16",
+    "uri": "mvdetassenkoning16@mv.voicedata.nl",
+    "ip": "192.168.1.13"
   },
   {
     "extension": "403",
     "name": "Corette",
-    "uri": "vm13@server",
+    "user": "mvdetassenkoning13",
+    "uri": "mvdetassenkoning13@mv.voicedata.nl",
     "ip": "192.168.1.21"
   },
   {
     "extension": "404",
-    "name": "Not found",
-    "uri": "vm13@server",
-    "ip": "192.168.1.21"
+    "name": "Sales",
+    "user": "mvdetassenkoning15",
+    "uri": "mvdetassenkoning15@mv.voicedata.nl",
+    "ip": "192.168.1.16"
   }
 ]
