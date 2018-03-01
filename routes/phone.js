@@ -1,20 +1,18 @@
-const debug = require('debug')('server-app:phone');
+const logger = require('../src/logger')('internal:api');
 
 const express = require('express');
 const router = express.Router();
+const {REALTIME_URL, REALTIME_API_KEY, PHONE_USERNAME, PHONE_PASSWORD,} = require('../config');
 
 const {extensions, extensionFromActiveUser,} = require('../src/extensions');
 const ServerMessenger = require('../src/ServerMessenger');
 const PhoneMessenger = require('../src/PhoneMessenger');
 
-const realtime_server_url = 'http://localhost:5678/api/v1';
-// const realtime_server_url = 'https://live.thefreighthero.nl/api/v1';
-const username = 'admin';
-const password = '045083';
-const api_key = 'ghis%$7%#sgdw34W^sVS(#$STshsg44';
+const realtime_url = REALTIME_URL || 'https://live.thefreighthero.nl';
+const realtime_api_url = `${realtime_url}/api/v1`;
 
-const serverMessenger = new ServerMessenger(realtime_server_url, api_key);
-const phoneMessenger = new PhoneMessenger(extensions, username, password);
+const serverMessenger = new ServerMessenger(realtime_api_url, REALTIME_API_KEY);
+const phoneMessenger = new PhoneMessenger(extensions, PHONE_USERNAME, PHONE_PASSWORD);
 
 function numberFromConnectionString(connection) {
     const m = /^sip:(\d*)@/.exec(connection);
@@ -42,7 +40,7 @@ router.get('/', (req, res, next) => {
  */
 router.post('/command', (req, res, next) => {
     const {cmd, extension,} = req.body;
-    debug('Command %s from %s', cmd, extension);
+    logger.info('Command %s from %s', cmd, extension);
     const phone_data = {};
     switch (cmd) {
         case 'answer':
@@ -72,7 +70,7 @@ router.post('/command', (req, res, next) => {
 router.post('/call', (req, res, next) => {
     const {extension, number,} = req.body;
     const cleaned_number = cleanPhoneNumber(number);
-    debug('Calling %s from %s', number, extension);
+    logger.info('Calling %s from %s', number, extension);
     phoneMessenger.sendMessage(extension, {key: `number=${cleaned_number}`,}, true)
         .then(() => {
             res.send({result: 'Ok', number: cleaned_number,});
@@ -100,12 +98,12 @@ router.get('/incoming', (req, res, next) => {
         number: numberFromConnectionString(remote),
     })
         .then(({number,}) => {
-            debug('Incoming call %s@%s from %s reported to the realtime server.', call_id, active_user, number);
+            logger.info('Incoming call %s@%s from %s reported to the realtime server.', call_id, active_user, number);
             res.send({status: 'Ok', call_id, number,});
         })
         .catch(err => {
             const message = `Error in communicating with realtime server: ${err}`;
-            debug(message);
+            logger.error(message);
             res.status(500);
             res.send({status: 'Error', message,});
         });
@@ -128,20 +126,18 @@ router.get('/outgoing', (req, res, next) => {
 router.get('/established', (req, res, next) => {
     const {active_user, call_id,} = req.query;
     const {extension,} = extensionFromActiveUser(active_user);
-    console.log('established ', active_user, call_id);
     const status = 2;
-    //todo
     serverMessenger.sendMessage('phone/call_status/' + extension, {
         call_id,
         data: {status,},
     })
-        .then(({number,}) => {
-            debug('Call established %s@%s with %s reported to the realtime server.', call_id, active_user, number);
-            res.send({status: 'Ok', call_id, number,});
+        .then(() => {
+            logger.info('Call established %s@%s reported to the realtime server.', call_id, extension);
+            res.send({status: 'Ok', call_id, extension,});
         })
         .catch(err => {
             const message = `Error in communicating with realtime server: ${err}`;
-            debug(message);
+            logger.error(message);
             res.status(500);
             res.send({status: 'Error', message,});
         });
@@ -149,12 +145,28 @@ router.get('/established', (req, res, next) => {
 });
 
 /**
- * Picked up new inoming call trigger from phone //Not needed??
- * http://192.168.1.26:3000/phone/terminated?active_user=$active_user&call_id=$call_id&remote=$remote&display_remote=$display_remote
+ * Terminated call trigger from phone
+ * http://192.168.1.26:3000/phone/terminated?active_user=$active_user&call_id=$call_id
  */
-router.get('/pickedup', (req, res, next) => {
-    const {active_host, active_user, ip, call_id, remote, local, display_remote, display_local,} = req.query;
-    console.log('pickedup ', active_host, active_user, ip, call_id, remote, display_remote, local, display_local);
+router.get('/terminated', (req, res, next) => {
+    const {active_user, call_id,} = req.query;
+    const {extension,} = extensionFromActiveUser(active_user);
+    const status = 3;
+    serverMessenger.sendMessage('phone/call_status/' + extension, {
+        call_id,
+        data: {status,},
+    })
+        .then(() => {
+            logger.info('Call terminated %s@%s reported to the realtime server.', call_id, extension);
+            res.send({status: 'Ok', call_id, extension,});
+        })
+        .catch(err => {
+            const message = `Error in communicating with realtime server: ${err}`;
+            logger.error(message);
+            res.status(500);
+            res.send({status: 'Error', message,});
+        });
+
 });
 
 module.exports = router;

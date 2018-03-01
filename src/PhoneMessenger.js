@@ -1,9 +1,9 @@
-const debug = require('debug')('server-app:phonemessenger');
+const logger = require('../src/logger')('internal:phonemessenger');
 const {URLSearchParams,} = require('url');
 const rp = require('request-promise-native');
 const btoa = require('btoa');
 
-const TEST_MODE = true;
+const TEST_MODE = process.env.PHONE_DEBUG_REROUTE || false;
 
 module.exports = class PhoneMessenger {
 
@@ -59,11 +59,11 @@ module.exports = class PhoneMessenger {
                 return;
             }
             if (TEST_MODE) {
-                debug('Request to %s', phone_uri);
+                logger.debug('Dummy request to %s', phone_uri);
                 resolve({});
                 return;
             }
-            debug('Request to %s', phone_uri);
+            logger.info('Request to %s', phone_uri);
             const options = {
                 method: 'GET',
                 uri: phone_uri,
