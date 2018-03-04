@@ -115,8 +115,29 @@ router.get('/incoming', (req, res, next) => {
  * http://192.168.1.26:3000/phone/outgoing?active_host=$active_host&active_user=$active_user&ip=$ip&remote=$remote&local=$local&display_remote=$display_remote&display_local=$display_local&call_id=$call_id&called_number=$calledNumber
  */
 router.get('/outgoing', (req, res, next) => {
-    const {active_host, active_user, ip, call_id, remote, local, display_remote, display_local, called_number,} = req.query;
-    console.log('Outgoing call ', active_host, active_user, ip, call_id, remote, display_remote, local, display_local, called_number);
+    const {active_user, call_id, remote, display_remote, called_number,} = req.query;
+    const {extension,} = extensionFromActiveUser(active_user);
+    if (!extension) {
+        res.status(404);
+        res.send({status: 'Error', message: `Extension for ${active_user} not found!`,});
+        return;
+    }
+    serverMessenger.sendMessage('phone/outgoing/' + extension, {
+        call_id,
+        name: display_remote,
+        number: called_number,
+    })
+        .then(({number,}) => {
+            logger.info('/Outgoing call %s@%s to %s reported to the realtime server.', call_id, active_user, number);
+            res.send({status: 'Ok', call_id, number,});
+        })
+        .catch(err => {
+            const message = `Error in communicating with realtime server: ${err}`;
+            logger.error(message);
+            res.status(500);
+            res.send({status: 'Error', message,});
+        });
+
 });
 
 /**
