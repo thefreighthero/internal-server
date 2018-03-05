@@ -141,6 +141,30 @@ router.get('/outgoing', (req, res, next) => {
 });
 
 /**
+ * Missed call trigger from phone
+ * http://192.168.1.26:3000/phone/missed?active_user=$active_user&call_id=$call_id
+ */
+router.get('/missed', (req, res, next) => {
+    const {active_user, call_id,} = req.query;
+    const {extension,} = extensionFromActiveUser(active_user);
+    const status = -1;
+    serverMessenger.sendMessage('phone/call_status/' + extension, {
+        call_id,
+        data: {status,},
+    })
+        .then(() => {
+            logger.info('Call missed %s@%s reported to the realtime server.', call_id, extension);
+            res.send({status: 'Ok', call_id, extension,});
+        })
+        .catch(err => {
+            const message = `Error in communicating with realtime server: ${err}`;
+            logger.error(message);
+            res.status(500);
+            res.send({status: 'Error', message,});
+        });
+});
+
+/**
  * Established call trigger from phone
  * http://192.168.1.26:3000/phone/established?active_user=$active_user&call_id=$call_id
  */

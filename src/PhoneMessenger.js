@@ -9,7 +9,7 @@ module.exports = class PhoneMessenger {
 
     constructor(extensions, username, password) {
         this.extensions = extensions;
-        this.credentials = btoa(`${username}:${password}`)
+        this.credentials = btoa(`${username}:${password}`);
     }
 
     /**
