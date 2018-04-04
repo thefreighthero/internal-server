@@ -70,7 +70,7 @@ router.post('/command', (req, res, next) => {
 router.post('/call', (req, res, next) => {
     const {extension, number,} = req.body;
     const cleaned_number = cleanPhoneNumber(number);
-    logger.info('Calling %s from %s', number, extension);
+    logger.info('Calling %s from %s', cleaned_number, extension);
     phoneMessenger.sendMessage(extension, {key: `number=${cleaned_number}`,}, true)
         .then(() => {
             res.send({result: 'Ok', number: cleaned_number,});
