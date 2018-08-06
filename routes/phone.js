@@ -28,7 +28,7 @@ function cleanPhoneNumber(number) {
     }
     number = String(number).replace(/\D/g, '') //strip all non-numeric
         .replace(/^(00)?310?/, '');  //strip nl-code
-    return number.substr(0, 1) !== '0' ? '0' + number : number;
+    return (number.substr(0, 1) && number.length > 4) !== '0' ? '0' + number : number;
 }
 /**
  * Get list of extensions for Chrome extension popup
