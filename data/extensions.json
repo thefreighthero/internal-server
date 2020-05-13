@@ -2,43 +2,43 @@
   {
     "extension": "127",
     "name": "Ferd",
-    "user": "mvdetassenkoning12",
-    "uri": "mvdetassenkoning12@mv.voicedata.nl",
+    "user": "mvfreighthero00",
+    "uri": "mvfreighthero00@mv.voicedata.nl",
     "ip": "192.168.1.14"
   },
   {
     "extension": "400",
     "name": "Toin",
-    "user": "mvdetassenkoning13",
-    "uri": "mvdetassenkoning13@mv.voicedata.nl",
-    "ip": "192.168.1.27"
+    "user": "mvfreighthero00",
+    "uri": "mvfreighthero00@mv.voicedata.nl",
+    "ip": "192.168.1.12"
   },
   {
     "extension": "401",
-    "name": "Bastian",
-    "user": "mvdetassenkoning14",
-    "uri": "mvdetassenkoning14@mv.voicedata.nl",
-    "ip": "192.168.1.18"
-  },
-  {
-    "extension": "402",
-    "name": "Matthijs",
-    "user": "mvdetassenkoning16",
-    "uri": "mvdetassenkoning16@mv.voicedata.nl",
-    "ip": "192.168.1.13"
+    "name": "Michel",
+    "user": "mvfreighthero05",
+    "uri": "mvfreighthero05@mv.voicedata.nl",
+    "ip": "192.168.1.17"
   },
   {
     "extension": "403",
-    "name": "Corette",
-    "user": "mvdetassenkoning10",
-    "uri": "mvdetassenkoning10@mv.voicedata.nl",
-    "ip": "192.168.1.19"
+    "name": "Reserve",
+    "user": "mvfreighthero06",
+    "uri": "mvfreighthero06@mv.voicedata.nl",
+    "ip": "192.168.1.13"
   },
   {
     "extension": "404",
-    "name": "Willem",
-    "user": "mvdetassenkoning15",
-    "uri": "mvdetassenkoning15@mv.voicedata.nl",
+    "name": "Matthijs",
+    "user": "mvfreighthero03",
+    "uri": "mvfreighthero03@mv.voicedata.nl",
+    "ip": "192.168.1.18"
+  },
+  {
+    "extension": "405",
+    "name": "Sam",
+    "user": "mvfreighthero06",
+    "uri": "mvfreighthero06@mv.voicedata.nl",
     "ip": "192.168.1.16"
   }
 ]
