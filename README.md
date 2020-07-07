@@ -8,6 +8,8 @@ Get output from service via CLI:
 
 Manage extensions/users/IPs in file [`data/extensions.json`](https://github.com/thefreighthero/internal-server/blob/master/data/extensions.json)
 
+Find current IPs and usernames: https://login.voicedata.nl/ext/managedvoice#channels
+
 ### Manage service
 
 Use `service.sh` script to manage service. Adjust IP if needed.
